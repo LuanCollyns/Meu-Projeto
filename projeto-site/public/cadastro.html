@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastre-se para saber um pouco mais do valor das músicas</title>
+    <link rel="sortcut icon" href="./img/fav2.png" type="image/png">
+    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/cadastro.css">
+</head>
+
+<body>
+    <!-- CADASTRO -->
+    <div class="showcase7">
+        <div class="container">
+            <div class="cadastro">
+                <a href="index.html"><img src="./img/icon.jpg" alt="" class="usuario"></a>
+                <h6>Cadastro</h6>
+
+                <form id="form_cadastro" method="post" onsubmit="return cadastrar()">
+                    <p>E-mail</p>
+                    <input type="email" required id="email" name="email" onkeyup="validar_email()"
+                        placeholder="Insira um email válido">
+
+                    <p>Usuário</p>
+                    <input type="usuario" id="usuario" name="nomeUsuario" onkeyup="validar_usuario1()"
+                        placeholder="Insira um nome de usuário válido" required minlength="4">
+
+                    <p>Senha</p>
+                    <input type="password" id="senha" name="senha" onkeyup="validar_senha1()"
+                        placeholder="Insira uma senha válida" required minlength="4">
+
+                    <button type="submit">Finalizar cadastro</button>
+                    <a href="login.html"><p>Já possui uma conta?</p></a>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+<script>
+
+    function cadastrar() {
+        var formulario = new URLSearchParams(new FormData(form_cadastro));
+        fetch("/usuarios/cadastrar", {
+            method: "POST",
+            body: formulario
+        }).then(function (response) {
+
+            if (response.ok) {
+                window.location.href = 'login.html';
+
+            } else {
+                console.log('Erro de cadastro!');
+                response.text().then(function (resposta) {
+                    alert(resposta)
+                });
+            }
+        });
+
+        return false;
+    }
+    function validar_email() {
+        var emaill = email.value;
+        if (emaill.includes('@') == true && emaill.includes('.com') == true) {
+            email.style = 'border-color:green';
+
+
+        } else {
+            email.style = 'border-color:red'
+
+        }
+    }
+
+    function validar_senha1() {
+        var senhaa = senha.value;
+        if (senhaa.length >= 4) {
+            senha.style = `border-color: green`;
+
+        } else {
+            senha.style = 'border-color:red';
+
+        }
+    }
+    function validar_usuario1() {
+        var usuarioo = usuario.value;
+        if (usuarioo.length >= 4) {
+            usuario.style = `border-color: green`;
+
+
+        } else {
+            usuario.style = 'border-color:red';
+
+        }
+    }
+
+</script>

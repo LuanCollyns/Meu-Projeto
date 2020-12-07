@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="./css/login.css" />
+    <link rel="sortcut icon" href="./img/fav2.png" type="image/png">
+
+</head>
+
+<body>
+
+
+    <!--CRIAÇÃO DA TELA DE LOGIN 
+    DIV CLASS CONTENT = CONTEUDO-->
+    <div class="showcase6">
+        <div class="container">
+            <div class="login">
+                <a href="index.html"><img src="./img/icon.jpg" alt="" class="usuario"></a>
+                <h6>Login</h6>
+
+                <form id="form_login" method="post" onsubmit="return entrar()">
+                    <p>Usuário</p>
+                    <input type="usuario" id="usuario" name="nomeUsuario" onkeyup="validar_usuario()"
+                        placeholder="Insira seu nome de usuário" required minlength="4">
+                    <p>Senha</p>
+                    <input type="password" id="senha" name="senha" onkeyup="validar_senha()"
+                        placeholder="Insira sua senha" required minlength="4">
+                    <button type="submit">Login</button>
+                    <a href="cadastro.html">Ainda não possui uma conta?</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+<script>
+    noexit()
+    function noexit() {
+        let nome_usuario = sessionStorage.getItem('nome_usuario');
+        if (nome_usuario != undefined) {
+            window.location.href = 'albuns.html'
+        } else {
+
+        }
+    }
+    function entrar() {
+        var formulario = new URLSearchParams(new FormData(form_login));
+        fetch("/usuarios/autenticar", {
+            method: "POST",
+            body: formulario
+        }).then(resposta => {
+
+            if (resposta.ok) {
+
+                resposta.json().then(json => {
+
+                    sessionStorage.nomeUsuario_meuapp = json.nomeUsuario;
+
+                    window.location.href = 'MusicasValores.html';
+                });
+
+            } else {
+
+                console.log('Erro de login!');
+
+                resposta.text().then(texto => {
+                    console.error(texto);
+                    finalizar_aguardar(texto);
+                });
+            }
+        });
+
+        return false;
+    }
+    function validar_senha() {
+        var senhaa = senha.value;
+        if (senhaa.length >= 4) {
+            senha.style = `border-color: green`;
+
+        } else {
+            senha.style = 'border-color:red';
+        }
+    }
+    function validar_usuario() {
+        var usuarioo = usuario.value;
+        if (usuarioo.length >= 4) {
+            usuario.style = `border-color: green`;
+
+        } else {
+            usuario.style = 'border-color:red';
+        }
+    }
+
+</script>
+
+</body>
+
+</html>
